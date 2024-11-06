@@ -8,6 +8,8 @@ export class RegisterPage extends BasePage {
     this.userNameField = this.page.getByPlaceholder("Your Name");
     this.signupButton = this.getByRole("button", { name: "Sign up" });
   }
+  //Method to fill in registration form
+
   async register(userName, userEmail, userPassword) {
     await this.userNameField.click();
     await this.userNameField.fill(userName);

@@ -5,8 +5,8 @@ import { MainPage, RegisterPage, SettingsPage } from "../src/pages/index";
 //User navigates to the main page
 const url = "https://realworld.qa.guru/#/";
 let newUser;
-//???? What page is this we trying to describe?
-test.describe("Sign up page ?", () => {
+
+test.describe("Sign up page", () => {
   test.beforeEach(async ({ page }) => {
     newUser = {
       bio: faker.music.genre(),
@@ -14,22 +14,23 @@ test.describe("Sign up page ?", () => {
       name: faker.person.firstName("female"),
       password: faker.internet.password(),
     };
+    // Instantiate page objects
     const mainPage = new MainPage(page);
     const registerPage = new RegisterPage(page);
 
+    // Navigate to main page and open registration
     await mainPage.open(url);
-    await registerPage.register(newUser.name, newUser.email, newUser.password);
     await mainPage.goToRegister();
+
+    //Register with new user data
+    await registerPage.register(newUser.name, newUser.email, newUser.password);
   });
 
-  test("User can change bio", async ({ page }) => {
+  test("User can register with valid credentials", async ({ page }) => {
     const mainPage = new MainPage(page);
-    //Should this test case be in the register page?
-    const settingsPage = new SettingsPage(page);
+    const registerPage = new RegisterPage(page);
 
-    await mainPage.goToSettings();
-    await settingsPage.updateProfile(newUser.bio);
-    let profileInfo = await settingsPage.getProfile();
-    await expect(profileInfo.bio).toHaveText(newUser.bio);
+    //Assetion: Check if user is successfully registered
+    await expect(page).toHaveURL("https://realworld.qa.guru/#/");
   });
 });
