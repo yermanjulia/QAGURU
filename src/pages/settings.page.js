@@ -10,10 +10,11 @@ export class SettingsPage extends BasePage {
     this.nameField = this.page.getByPlaceholder("Your Name");
     this.bioField = this.page.getByPlaceholder("Short bio about you");
     this.emailField = this.page.getByPlaceholder("Email");
-    this.passwordField = this.page.getByPlaceholder("New Password");
+    this.passwordField = this.page.getByPlaceholder("Password");
     this.updateSettingsButton = this.page.getByRole("button", {
       name: "Update Settings",
     });
+    this.profilePicture = this.page.locator("[name='image']");
   }
   async insertUrlPicture(url) {
     await this.urlProfilePicture.click();

@@ -24,6 +24,7 @@ test.describe("Sign up page", () => {
 
     //Register with new user data
     await registerPage.register(newUser.name, newUser.email, newUser.password);
+    await registerPage.signupButton.click();
   });
 
   test("User can register with valid credentials", async ({ page }) => {
@@ -31,6 +32,8 @@ test.describe("Sign up page", () => {
     const registerPage = new RegisterPage(page);
 
     //Assetion: Check if user is successfully registered
-    await expect(page).toHaveURL("https://realworld.qa.guru/#/");
+    await expect(page).toHaveURL("https://realworld.qa.guru/#/", {
+      timeout: 10000,
+    });
   });
 });

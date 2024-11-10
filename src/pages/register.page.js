@@ -3,10 +3,10 @@ import { BasePage } from "./base.page";
 export class RegisterPage extends BasePage {
   constructor(page) {
     super(page);
-    this.emailField = this.page.getByPlaceholder("Email");
-    this.passwordField = this.getByPlaceholder("Password");
+    this.emailField = page.getByPlaceholder("Email");
+    this.passwordField = this.page.getByPlaceholder("Password");
     this.userNameField = this.page.getByPlaceholder("Your Name");
-    this.signupButton = this.getByRole("button", { name: "Sign up" });
+    this.signupButton = this.page.getByRole("button", { name: "Sign up" });
   }
   //Method to fill in registration form
 
