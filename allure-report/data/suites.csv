@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1594","User is able to login with updated password","chromium","Thu Nov 21 13:33:28 PST 2024","failed","Thu Nov 21 13:33:29 PST 2024","Settings Page Tests","settings.spec.js","",""
+"","2488","User can enter bio","chromium","Thu Nov 21 13:33:21 PST 2024","passed","Thu Nov 21 13:33:23 PST 2024","Settings Page Tests","settings.spec.js","",""
+"","2422","User can update name","chromium","Thu Nov 21 13:33:21 PST 2024","passed","Thu Nov 21 13:33:23 PST 2024","Settings Page Tests","settings.spec.js","",""
+"","1732","User can update email","chromium","Thu Nov 21 13:33:28 PST 2024","passed","Thu Nov 21 13:33:29 PST 2024","Settings Page Tests","settings.spec.js","",""
+"","1583","User can update password","chromium","Thu Nov 21 13:33:28 PST 2024","passed","Thu Nov 21 13:33:29 PST 2024","Settings Page Tests","settings.spec.js","",""
+"","2334","User can register with valid credentials","chromium","Thu Nov 21 13:33:21 PST 2024","passed","Thu Nov 21 13:33:23 PST 2024","Sign up page","register.spec.js","",""
+"","2465","User can insert URL of profile picture","chromium","Thu Nov 21 13:33:21 PST 2024","passed","Thu Nov 21 13:33:23 PST 2024","Settings Page Tests","settings.spec.js","",""

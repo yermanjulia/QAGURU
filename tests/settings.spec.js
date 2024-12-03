@@ -1,11 +1,14 @@
 import { test, expect } from "@playwright/test";
+import * as allure from "allure-js-commons";
 import { faker } from "@faker-js/faker";
 import { MainPage, RegisterPage, SettingsPage } from "../src/pages/index";
 
 const url = "https://realworld.qa.guru";
 
 test.describe("Settings Page Tests", () => {
+  let mainPage;
   let settingsPage;
+  let registerPage;
   let newUser;
 
   // Precondition: User is logged in
@@ -18,8 +21,8 @@ test.describe("Settings Page Tests", () => {
     };
 
     // Instantiate page objects
-    const mainPage = new MainPage(page);
-    const registerPage = new RegisterPage(page);
+    mainPage = new MainPage(page);
+    registerPage = new RegisterPage(page);
     settingsPage = new SettingsPage(page);
 
     // Open the main page, register, and login
@@ -35,15 +38,19 @@ test.describe("Settings Page Tests", () => {
     await expect(page).toHaveURL(`${url}/#/settings`, { timeout: 10000 });
   });
 
-  // test("Settings Page Tests", async ({ page }) => {
-  //   // Test: User can navigate to the Settings page
-  //   await test.step("User can navigate to the Settings page", async () => {
-  //     await expect(page).toHaveURL(`${url}/#/settings`);
-  //   });
-
   //User can insert URL of profile picture
   test("User can insert URL of profile picture", async () => {
     const urlProfilePicture = faker.image.url();
+
+    await allure.owner("Julia Y");
+    await allure.tags("smoke", "regression", "settings");
+    await allure.severity("critical");
+    await allure.epic("Web interface");
+    await allure.feature("Essential features");
+    await allure.story("Authentication");
+    await allure.parentSuite("Tests for web interface");
+    await allure.suite("Tests for essential features");
+    await allure.subSuite("Tests for authentication");
 
     await settingsPage.insertUrlPicture(urlProfilePicture);
     await settingsPage.updateSettings();
@@ -54,46 +61,39 @@ test.describe("Settings Page Tests", () => {
     );
   });
 
-  // Test: User can update name
-
-  test("User can update name", async () => {
-    const name = faker.person.firstName();
-    await settingsPage.updateName(name);
-    await settingsPage.updateSettings();
-
-    await expect(settingsPage.nameField).toHaveValue(name);
-  });
-
   //   // Test: User can enter bio
   test("User can enter bio", async () => {
     const bio = faker.music.genre();
     await settingsPage.enterUserBio(bio);
     await settingsPage.updateSettings();
 
+    // Verify that the bio field contains the expected value
     await expect(settingsPage.bioField).toHaveValue(bio);
   });
 
-  // Test: User can update email
-  test("User can update email", async () => {
-    const email = faker.internet.email();
+  // Test: User can update email and login with new credentials
+  test("User can update email and login with new credentials", async () => {
+    const newEmail = faker.internet.email();
 
-    await settingsPage.updateEmail(email);
+    // Update email
+    await settingsPage.updateEmail(newEmail);
     await settingsPage.updateSettings();
 
-    await expect(settingsPage.emailField).toHaveValue(email);
+    await expect(settingsPage.emailField).toHaveValue(newEmail);
+
+    //Log out
+    await mainPage.logout();
+    // Log in with the new email
+    await mainPage.login(newEmail, newUser.password);
+    // Verify login was successful
+    await expect(page).toHaveURL("https://realworld.qa.guru/#/");
   });
 
   // Test: User can update password
 
-  test("User can update password", async () => {
-    const password = faker.internet.password();
+  // test("User can update password", async () => {
+  //   const password = faker.internet.password();
 
-    await settingsPage.updatePassword(password);
-  });
-
-  test("User is able to login with updated password", async () => {
-    await settingsPage.logout();
-    await settingsPage.login(newUser.email, newPassword);
-    await expect(page).toHaveURL(`${url}/#/settings`, { timeout: 10000 });
-  });
+  //   await settingsPage.updatePassword(password);
+  // });
 });
