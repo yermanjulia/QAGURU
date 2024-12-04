@@ -1,4 +1,5 @@
 import { BasePage } from "./base.page";
+import { expect } from "@playwright/test";
 
 export class SettingsPage extends BasePage {
   constructor(page) {
@@ -38,5 +39,6 @@ export class SettingsPage extends BasePage {
   }
   async updateSettings() {
     await this.updateSettingsButton.click();
+    await expect(this.updateSettingsButton).toBeHidden();
   }
 }

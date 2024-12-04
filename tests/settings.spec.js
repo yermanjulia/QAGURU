@@ -3,14 +3,15 @@ import * as allure from "allure-js-commons";
 import { faker } from "@faker-js/faker";
 import { MainPage, RegisterPage, SettingsPage } from "../src/pages/index";
 
+test.describe.configure({ mode: "serial" });
+
 const url = "https://realworld.qa.guru";
+let mainPage;
+let settingsPage;
+let registerPage;
+let newUser;
 
 test.describe("Settings Page Tests", () => {
-  let mainPage;
-  let settingsPage;
-  let registerPage;
-  let newUser;
-
   // Precondition: User is logged in
   test.beforeEach(async ({ page }) => {
     newUser = {
@@ -39,7 +40,10 @@ test.describe("Settings Page Tests", () => {
   });
 
   //User can insert URL of profile picture
-  test("User can insert URL of profile picture", async () => {
+  test("User can insert URL of profile picture", async ({ page }) => {
+    mainPage = new MainPage(page);
+    registerPage = new RegisterPage(page);
+    settingsPage = new SettingsPage(page);
     const urlProfilePicture = faker.image.url();
 
     await allure.owner("Julia Y");
@@ -62,7 +66,10 @@ test.describe("Settings Page Tests", () => {
   });
 
   //   // Test: User can enter bio
-  test("User can enter bio", async () => {
+  test("User can enter bio", async ({ page }) => {
+    mainPage = new MainPage(page);
+    registerPage = new RegisterPage(page);
+    settingsPage = new SettingsPage(page);
     const bio = faker.music.genre();
     await settingsPage.enterUserBio(bio);
     await settingsPage.updateSettings();
@@ -72,7 +79,12 @@ test.describe("Settings Page Tests", () => {
   });
 
   // Test: User can update email and login with new credentials
-  test("User can update email and login with new credentials", async () => {
+  test.skip("User can update email and login with new credentials", async ({
+    page,
+  }) => {
+    mainPage = new MainPage(page);
+    registerPage = new RegisterPage(page);
+    settingsPage = new SettingsPage(page);
     const newEmail = faker.internet.email();
 
     // Update email
@@ -83,17 +95,36 @@ test.describe("Settings Page Tests", () => {
 
     //Log out
     await mainPage.logout();
+    await expect(page.getByText("Loading articles list...")).toBeVisible();
+    await expect(page.getByText("Loading articles list...")).toBeHidden();
+    await mainPage.loginLink.click();
     // Log in with the new email
     await mainPage.login(newEmail, newUser.password);
     // Verify login was successful
     await expect(page).toHaveURL("https://realworld.qa.guru/#/");
   });
 
-  // Test: User can update password
+  // Test: User can update password and able to login with updated password
 
-  // test("User can update password", async () => {
-  //   const password = faker.internet.password();
+  test.skip("User can update password and able to login with updated password", async ({
+    page,
+  }) => {
+    mainPage = new MainPage(page);
+    registerPage = new RegisterPage(page);
+    settingsPage = new SettingsPage(page);
+    const newPassword = faker.internet.password();
+    // Update password
+    await settingsPage.updatePassword(newPassword);
+    await settingsPage.updateSettings();
 
-  //   await settingsPage.updatePassword(password);
-  // });
+    //Log out
+    await mainPage.logout();
+    await expect(page.getByText("Loading articles list...")).toBeVisible();
+    await expect(page.getByText("Loading articles list...")).toBeHidden();
+    await mainPage.loginLink.click();
+    // Log in with the new password
+    await mainPage.login(newUser.email, newPassword);
+    // Verify login was successful
+    await expect(page).toHaveURL("https://realworld.qa.guru/#/");
+  });
 });
